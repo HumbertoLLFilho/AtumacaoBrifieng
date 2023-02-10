@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Automacao.Core\Automacao.Core.csproj" />
+    <ProjectReference Include="..\Automacao.Domain\Automacao.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
