@@ -18,7 +18,6 @@ namespace Automacao.Core.Extensions
             Delimiter = ";",
         };
 
-
         public static Environment AddCodes(this Environment environment)
         {
             string documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);

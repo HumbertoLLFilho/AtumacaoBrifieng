@@ -1,19 +1,17 @@
-﻿using Automacao.Core.Extensions;
-using Automacao.Domain.Services;
-using Automacao.Infra.Services;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Automacao.Application.Interfaces;
+using Automacao.Console.Configurations;
 
-var big = new Automacao.Core.Environment()
-{
-    Name = "Big",
-    InternalID = "pmbg01",
-};
+var services = new ServiceCollection();
 
-big.AddCodes();
+services.ConfigureServices();
 
-var envoirments = new List<Automacao.Core.Environment>()
-{
-    big
-};
+var provider = services.BuildServiceProvider();
+
+var environmentApplication = provider.GetService<IEnvironmentApplication>();
+var assignmentApplication = provider.GetService<IAssignmentApplication>();
+
+var environments = environmentApplication.Get();
 
 bool loop = true;
 while (loop)
@@ -26,7 +24,7 @@ while (loop)
 
     var typedEnvoirment = Console.ReadLine();
 
-    var envoirment = envoirments.FirstOrDefault(x => x.InternalID == typedEnvoirment);
+    var envoirment = environments.FirstOrDefault(x => x.InternalID == typedEnvoirment);
 
     if (envoirment is not null)
     {
@@ -55,9 +53,7 @@ while (loop)
 
                 if (resp1 == "")
                 {
-                    var results = AssignmentService.HibridToManual(internalIDs, envoirment.Codes);
-
-                    CsvInfra.SaveData(results, @"C:\Users\Humberto\Documents\Automacao\Big\AAG_HIBRID-TO-MANUAL-HUMBERTO_V2.csv");
+                    assignmentApplication.HibridToManual(internalIDs, envoirment);
 
                     isValidCode = false;
                 }

@@ -1,10 +1,25 @@
 ﻿using System.Globalization;
 using CsvHelper;
+using CsvHelper.Configuration;
 
 namespace Automacao.Infra.Services
 {
     public class CsvInfra
     {
+        private static string DocumentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+
+        private static readonly CsvConfiguration Config = new(CultureInfo.InvariantCulture)
+        {
+            PrepareHeaderForMatch = args => args.Header.ToLower(),
+            HeaderValidated = args =>
+            {
+
+            },
+            MissingFieldFound = null,
+            TrimOptions = TrimOptions.Trim,
+            Delimiter = ";",
+        };
+
         public List<T> OpenAndRead<T>(string path) where T : class
         {
             return GetRecords<T>(path).ToList();
@@ -19,15 +34,17 @@ namespace Automacao.Infra.Services
             }
         }
 
-        public static void SaveData<T>(List<T> records, string path, string toppingCode = "C")
+        public static void SaveData<T>(List<T> records, string environmentName, string fileName, string toppingCode = "C")
         {
-            using (var writer = new StreamWriter(path))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            var fullPath = $@"{DocumentsPath}\Automacao\{environmentName}\{fileName}";
+
+            using (var writer = new StreamWriter(fullPath))
+            using (var csv = new CsvWriter(writer, Config))
             {
                 csv.WriteRecords(records);
             }
 
-            AddToppingCode(toppingCode, path);
+            AddToppingCode(toppingCode, fullPath);
         }
 
         public static void AddToppingCode(string toppingCode, string path)
