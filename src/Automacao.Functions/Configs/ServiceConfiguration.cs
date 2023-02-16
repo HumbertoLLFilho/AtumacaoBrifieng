@@ -2,11 +2,11 @@
 using Automacao.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Automacao.Configurations
+namespace Automacao.Functions.Configs
 {
     public static class ServiceConfiguration
     {
-        public static ServiceCollection ConfigureServices(this ServiceCollection services)
+        public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
             // Application
             services.AddSingleton<ICodeApplication, CodeApplication>();

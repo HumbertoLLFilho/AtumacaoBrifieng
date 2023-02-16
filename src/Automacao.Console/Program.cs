@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Automacao.Application.Interfaces;
-using Automacao.Console.Configurations;
+using Automacao.Configurations;
+using Automacao.Extensions;
 
 var services = new ServiceCollection();
 
@@ -16,27 +17,14 @@ var environments = environmentApplication.Get();
 bool loop = true;
 while (loop)
 {
-    Console.WriteLine("#--------------------------------------#");
-    Console.WriteLine("| Digite qual ambiente deseja alterar  |");
-    Console.WriteLine("|          ou 0 para SAIR              |");
-    Console.WriteLine("#--------------------------------------#");
-    Console.Write("Codigo do ambiente: ");
-
+    ConsoleExtension.PrintMenu();
     var typedEnvoirment = Console.ReadLine();
 
     var envoirment = environments.FirstOrDefault(x => x.InternalID == typedEnvoirment);
 
     if (envoirment is not null)
     {
-        Console.WriteLine("\n#--------------------------------------#");
-        Console.WriteLine("|        O que deseja realizar?        |");
-        Console.WriteLine("#--------------------------------------#");
-        Console.WriteLine("|    1- Troca de hibrido para manual   |");
-        Console.WriteLine("|                                      |");
-        Console.WriteLine("|            0 - Voltar                |");
-        Console.WriteLine("#--------------------------------------#");
-        Console.Write("Opção: ");
-
+        ConsoleExtension.PrintOptionsMenu();
         var resp = Console.ReadLine();
 
         if (resp == "1")
